@@ -1,0 +1,45 @@
+class Solution{
+public:
+    int dfs(Node* root){
+       if(root==NULL){
+           return INT_MAX;
+       }
+       int mn=dfs(root->left);
+       mn=min(mn,dfs(root->right));
+       if(mn==INT_MAX){
+           mn=0;
+       }
+       mn=root->data+mn;
+       return mn;
+    }
+    
+    Node* search(Node*root,int target,int &ans){
+        if(root==NULL){
+            return root;
+        }
+        if(root->data>target){
+            ans+=root->data;
+            return search(root->left,target,ans);
+        }
+        else if(root->data<target){
+            ans+=root->data;
+            return search(root->right,target,ans);
+        }
+        else{
+            return root;
+        }
+    }
+    
+    int maxDifferenceBST(Node *root,int target){
+        if(root==NULL){
+            return -1;
+        }
+        int sum=0;
+        Node *n=search(root,target,sum);
+        if(n==NULL){
+            return -1;
+        }
+        sum=sum-(dfs(n)-n->data);
+        return sum;
+    }
+};
