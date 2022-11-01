@@ -1,0 +1,44 @@
+You are given te root of a binary tree and each node has  a value. You have to find number of subtrees such that they have the count of distinct elements as less than 
+or equal to k.
+
+Approach:We will traverse the tree. The iea is to get the unique values from left, right and include value of root then see if this count is less than or equal to
+k if yes we increment the answer variable. Now we maintain this count of unique elements by passing all the elments of the left and right side suing recursion.
+
+
+class Solution{
+public:
+   set<int> dfs(Node* root,int k,int &ans){
+       set<int>s;
+       set<int>s1;
+       set<int>s2;
+       
+       if(root->left!=NULL){
+           s1=dfs(root->left,k,ans);
+       }
+       if(root->right!=NULL){
+           s2=dfs(root->right,k,ans);
+       }
+       
+       s.insert(root->data);
+       set<int>::iterator it;
+       
+       for(it=s1.begin();it!=s1.end();it++){
+           s.insert(*it);
+       }
+       for(it=s2.begin();it!=s2.end();it++){
+           s.insert(*it);
+       }
+       if(s.size()<=k){
+           ans+=1;
+       }
+       return s;
+   }
+    int goodSubtrees(Node *root,int k){
+        if(root==NULL){
+            return 0;
+        }
+        int ans=0;
+        dfs(root,k,ans);
+        return ans;
+    }
+};
