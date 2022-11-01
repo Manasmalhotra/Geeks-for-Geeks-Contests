@@ -1,0 +1,32 @@
+You are given an array of integers of size n where n is even.
+You have to calculate the number of dominant pairs: pairs such that i<j and arr[i]>=5*arr[j].
+0<=i<n/2 and n/2<=j<n.
+
+Approach:
+Since here the partition is clear that i lies in 0 to n/2-1 and j lies in n/2 to n. Therefore we can sort the two halves of the array and apply two pointer technique here.
+If we will sort both the halves in decreasing order this will imply for the second half that they got a chance with max possible element and for the first half that 
+we say five ties of one number is less than one number of the first half then all the numbers after this one in second half would be lesser than this element of first.
+
+Example: 10 8 2 1 1 2
+Sort=> 10 8 2 2 1 1
+p1=0 p2=n/2;
+Here A[p1]>=5*A[p2]==> This implies for all the elements after p2 also 10 satifies the condition as if 10>5*2 then elements coming after 2 in decresing order of sorted will also holdthis.
+
+class Solution{
+public:
+    int dominantPairs(int n,vector<int> &arr){
+        sort(arr.begin()+n/2,arr.end(),greater<int>());
+        sort(arr.begin(),arr.begin()+n/2,greater<int>());
+        int p1=0,p2=n/2,count=0;
+        while(p1<n/2 && p2<n){
+            if(arr[p1]>=5*arr[p2]){
+                count+=(n-p2);
+                p1++;
+            }
+            else{
+                p2++;
+            }
+        }
+        return count;
+    }
+};
